@@ -7,15 +7,15 @@ public class WireMove : MonoBehaviour {
 	private bool isMoving;
 
 	// Use this for initialization
-	void Awake () {
+	public virtual void Awake () {
 		isMoving = true;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
 		//moving always
 		if (isMoving){
-			transform.Translate(Vector3.right * Time.deltaTime * wireSpeed);
+			transform.Translate(Vector3.right * Time.deltaTime * wireSpeed, Space.Self);
 		}
 	}
 

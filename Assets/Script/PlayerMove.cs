@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerMove : MonoBehaviour {
-
+	
 	public float stepForward, speed;
 	public GameObject explodeCube;
 	public int explodeCubesCount;
@@ -10,11 +10,11 @@ public class PlayerMove : MonoBehaviour {
 	private Rigidbody rbPlayer;
 	private float nextZPosition;
 	private bool go, end;
-	private AudioSource squish;
+	private AudioSource[] audioClips;
 
 	// Use this for initialization
 	void Start () {
-		squish = GetComponent<AudioSource>();
+		audioClips = GetComponents<AudioSource>();
 		rbPlayer = GetComponent<Rigidbody>();
 		nextZPosition = transform.position.z;
 	}
@@ -46,7 +46,7 @@ public class PlayerMove : MonoBehaviour {
 			}
 		}
 		//pause after death
-		if (end && (Input.touchCount > 0 || Input.GetKey("space"))) {
+		if (end && (Input.touchCount > 0 || Input.GetKeyDown("space"))) {
 				Application.LoadLevel(0);
 		}
 		//exit application
@@ -55,12 +55,13 @@ public class PlayerMove : MonoBehaviour {
 		}
 	}
 
-	//death
+	//death or bonus pick
 	public void OnTriggerEnter(Collider c){
 		if (c.CompareTag("Bonus")){
-
+			ScoreBonus.SetScore(1);
 		}else{
-			squish.Play();
+			audioClips[0].Play();
+			audioClips[1].Play();
 			GetComponent<MeshRenderer>().enabled = false;
 			GetComponent<BoxCollider>().enabled = false;
 			for (int i = 0; i < explodeCubesCount; i++){

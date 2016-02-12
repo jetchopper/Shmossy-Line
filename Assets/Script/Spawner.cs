@@ -5,17 +5,16 @@ public class Spawner : MonoBehaviour {
 
 	public Material[] materials;
 	public GameObject wire, bonus;
-	public int amountSizes;
+	public int amountSizes, bonusCount;
 	public float wireSpeed, gapSize, initXScale;
 
 	private GameObject bufferWire, asdf;
 	private float timer;
-	private int randInt, randMat, bonusCount;
+	private int randInt, randMat;
 	private bool isStopped, bonusComing;
 
 	// Use this for initialization
 	void Awake () {
-		bonusCount = 10;
 		timer = 0f;
 		randInt = Random.Range(1, amountSizes);
 		randMat = Random.Range(0, materials.Length);
@@ -30,12 +29,12 @@ public class Spawner : MonoBehaviour {
 		//process that instantiates and translates wires and bonuses, many randoms 
 		if (timer < 0f){
 			if (bonusCount < 0){
-				bufferWire = wireSpeed >= 0 ? (GameObject)Instantiate(bonus, new Vector3(-30, transform.position.y, transform.position.z), Quaternion.identity) : 
-					(GameObject)Instantiate(bonus, new Vector3(30, transform.position.y, transform.position.z), Quaternion.identity);
+				bufferWire = wireSpeed >= 0 ? (GameObject)Instantiate(bonus, new Vector3(-30, transform.position.y, transform.position.z), bonus.transform.rotation) : 
+					(GameObject)Instantiate(bonus, new Vector3(30, transform.position.y, transform.position.z), bonus.transform.rotation);
 				bonusCount = 10;
 			}else{
-				bufferWire = wireSpeed >= 0 ? (GameObject)Instantiate(wire, new Vector3(-30, transform.position.y, transform.position.z), Quaternion.identity) : 
-					(GameObject)Instantiate(wire, new Vector3(30, transform.position.y, transform.position.z), Quaternion.identity);
+				bufferWire = wireSpeed >= 0 ? (GameObject)Instantiate(wire, new Vector3(-30, transform.position.y, transform.position.z), bonus.transform.rotation) : 
+					(GameObject)Instantiate(wire, new Vector3(30, transform.position.y, transform.position.z), bonus.transform.rotation);
 				bufferWire.transform.localScale = new Vector3(randInt * initXScale, bufferWire.transform.localScale.y, 
 				                                              bufferWire.transform.localScale.z);
 				bufferWire.GetComponent<Renderer>().material = materials[randMat];
