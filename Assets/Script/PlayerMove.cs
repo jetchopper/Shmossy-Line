@@ -11,9 +11,11 @@ public class PlayerMove : MonoBehaviour {
 	private float nextZPosition;
 	private bool go, end;
 	private AudioSource[] audioClips;
+	private static int bountyIncrement;
 
 	// Use this for initialization
 	void Start () {
+		bountyIncrement = 1;
 		audioClips = GetComponents<AudioSource>();
 		rbPlayer = GetComponent<Rigidbody>();
 		nextZPosition = transform.position.z;
@@ -41,7 +43,7 @@ public class PlayerMove : MonoBehaviour {
 				foreach (GameObject mid in GameObject.FindGameObjectsWithTag("MidSpawner")){
 					mid.GetComponent<MidSpawner>().DisableByZ(nextZPosition);
 				}
-				Score.SetScore((int)(nextZPosition + 2) / 2);
+				Score.SetScore(1 * bountyIncrement);
 				go = false;
 			}
 		}
@@ -58,7 +60,7 @@ public class PlayerMove : MonoBehaviour {
 	//death or bonus pick
 	public void OnTriggerEnter(Collider c){
 		if (c.CompareTag("Bonus")){
-			ScoreBonus.SetScore(1);
+			Score.SetScore(10 * bountyIncrement);
 		}else{
 			audioClips[0].Play();
 			audioClips[1].Play();
@@ -69,5 +71,10 @@ public class PlayerMove : MonoBehaviour {
 			}
 			end = true;
 		}
+	}
+
+	public static void SetIncrement(){
+		bountyIncrement++;
+		BountyInc.TextBountyInc();
 	}
 }

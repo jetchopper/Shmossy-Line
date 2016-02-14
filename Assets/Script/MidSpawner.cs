@@ -50,6 +50,7 @@ public class MidSpawner : MonoBehaviour {
 		if (player.position.z - transform.position.z > 60){
 			superSpawner = FindObjectOfType (typeof(SuperSpawner)) as SuperSpawner;
 			superSpawner.Respawner(transform.position.z + 40);
+			PlayerMove.SetIncrement();
 			Destroy(gameObject);
 		}
 	}
